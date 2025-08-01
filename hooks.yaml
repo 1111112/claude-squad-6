@@ -1,0 +1,22 @@
+# Claude Squad 6 - Minimal Hooks Configuration
+version: "1.0"
+name: "claude-squad-6-hooks"
+
+# Essential hooks only
+hooks:
+  pre-commit:
+    - name: black
+      command: "black --check ."
+      auto_fix: "black ."
+      
+    - name: ruff
+      command: "ruff check ."
+      auto_fix: "ruff check --fix ."
+      
+  pre-push:
+    - name: pytest
+      command: "pytest"
+      
+    - name: coverage
+      command: "pytest --cov=. --cov-report=term-missing"
+      min_coverage: 80

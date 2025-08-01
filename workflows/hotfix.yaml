@@ -1,0 +1,103 @@
+# Hotfix Workflow - Emergency Fix Process
+# Optimized for speed while maintaining quality
+
+version: "1.0"
+name: "Hotfix Deployment"
+duration: "4 hours"
+description: "Emergency fix workflow with minimal bureaucracy"
+
+stages:
+  
+  # Stage 1: Triage (30 minutes)
+  triage:
+    name: "Issue Assessment"
+    duration: "30m"
+    parallel: false
+    
+    tasks:
+      - id: "assess_impact"
+        role: "qa_engineer"
+        action: "analyze_bug_report"
+        outputs: ["impact_assessment.md"]
+        duration: "15m"
+        
+      - id: "identify_fix"
+        role: "backend_dev"  # Or frontend_dev based on issue
+        action: "root_cause_analysis"
+        dependencies: ["assess_impact"]
+        outputs: ["fix_proposal.md"]
+        duration: "15m"
+    
+    gates:
+      - severity_confirmed_critical
+      - fix_approach_identified
+
+  # Stage 2: Fix (2 hours)
+  fix:
+    name: "Implementation & Test"
+    duration: "2h"
+    parallel: true
+    
+    tasks:
+      - id: "implement_fix"
+        role: "backend_dev"  # Dynamic based on issue type
+        action: "apply_fix"
+        outputs: ["hotfix/", "tests/hotfix/"]
+        duration: "1h"
+        
+      - id: "prepare_rollback"
+        role: "devops_eng"
+        action: "create_rollback_plan"
+        outputs: ["rollback.sh", "rollback_test.md"]
+        duration: "30m"
+        
+      - id: "regression_tests"
+        role: "qa_engineer"
+        action: "run_critical_tests"
+        dependencies: ["implement_fix"]
+        outputs: ["test_results.md"]
+        duration: "30m"
+
+  # Stage 3: Deploy (1.5 hours)
+  deploy:
+    name: "Fast-track Deployment"
+    duration: "1.5h"
+    parallel: false
+    
+    tasks:
+      - id: "canary_deploy"
+        role: "devops_eng"
+        action: "deploy_canary"
+        outputs: ["canary_metrics.json"]
+        duration: "30m"
+        
+      - id: "monitor_canary"
+        role: "devops_eng"
+        action: "validate_metrics"
+        dependencies: ["canary_deploy"]
+        outputs: ["validation_report.md"]
+        duration: "30m"
+        
+      - id: "full_deploy"
+        role: "devops_eng"
+        action: "deploy_all_instances"
+        dependencies: ["monitor_canary"]
+        outputs: ["deployment_complete.md"]
+        duration: "30m"
+
+# Minimal gates for speed
+quality_gates:
+  pre_deploy:
+    - critical_tests_pass
+    - no_new_failures
+    - rollback_tested
+  post_deploy:
+    - error_rate_stable
+    - response_time_normal
+    - no_customer_complaints
+
+# Communication protocol
+notifications:
+  start: ["engineering", "support", "leadership"]
+  deploy: ["all-hands"]
+  complete: ["customers", "status-page"]

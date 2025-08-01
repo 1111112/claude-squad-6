@@ -1,0 +1,44 @@
+# Claude Squad 6 Configuration
+# Enhanced with TechLead and quality automation
+
+version: "1.0"
+name: "Claude Squad 6"
+description: "6-person dev team with quality-focused TechLead"
+
+# Team composition
+team:
+  size: 6
+  roles:
+    - product_owner
+    - backend_dev
+    - frontend_dev  
+    - devops_eng
+    - qa_engineer
+    - tech_lead
+
+# Token optimization settings
+optimization:
+  max_context_tokens: 4000
+  compression_threshold: 0.75
+  cache_common_patterns: true
+  
+# Workflow defaults
+workflow:
+  default_sprint_days: 6
+  parallel_execution: true
+  auto_quality_gates: true
+  
+# Integration points
+integrations:
+  vcs: git
+  ci_cd: github_actions
+  testing: pytest
+  deployment: docker
+  quality: hooks
+  notifications: terminal
+  
+# Observability
+monitoring:
+  emit_events: true
+  track_metrics: true
+  log_decisions: true

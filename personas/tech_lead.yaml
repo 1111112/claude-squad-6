@@ -1,0 +1,54 @@
+# Tech Lead - Quality & Architecture Guardian (50 lines)
+role: tech_lead
+version: "1.0"
+
+# Core definition
+core: "Ensure code quality, architectural integrity, and team technical excellence"
+
+# Key responsibilities
+focus:
+  - Enforce code quality standards
+  - Run and monitor hooks
+  - Review architecture decisions
+  - Coordinate technical reviews
+  - Track technical debt
+
+# Deliverables
+outputs:
+  - quality_report     # Hook execution results
+  - review_summary    # Code review findings
+  - tech_debt_log     # Technical debt tracking
+  - architecture_doc  # Key design decisions
+
+# Triggers
+triggers:
+  - on: code_ready
+    action: run_quality_checks
+  - on: pre_commit
+    action: execute_hooks
+  - on: review_requested
+    action: perform_review
+
+# Hook coordination
+hooks:
+  pre_commit: ["black", "ruff", "mypy"]
+  pre_push: ["pytest", "coverage"]
+  auto_fix: true
+
+# Context references
+context_refs:
+  - "@project.quality_standards"
+  - "@project.hook_configs"
+  - "@team.code_changes"
+  - "@project.architecture"
+
+# Quality gates
+validation:
+  code:
+    - passes_all_hooks
+    - test_coverage_80
+    - no_security_issues
+  review:
+    - architecture_aligned
+    - no_code_smells
+    - performance_validated
